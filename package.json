@@ -1,0 +1,9 @@
+{
+  "name": "dfa_generator",
+  "version": "0.0.0",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  },
+  "devDependencies": {}
+}
