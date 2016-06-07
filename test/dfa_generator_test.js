@@ -5,7 +5,7 @@ describe('dfa-test', function () {
     it('should pass for any string', function () {
         var language = {
             "states": ["q1"],
-            "alphabets": [0, 1],
+            "alphabets": ["0", "1"],
             "transitionFunc": {
                 "q1": {"0": "q1", "1": "q1"}
             },
@@ -23,7 +23,7 @@ describe('dfa-test', function () {
     it('should pass for at least one character', function () {
         var language = {
             "states": ["q1", "q2"],
-            "alphabets": [0, 1],
+            "alphabets": ["0", "1"],
             "transitionFunc": {
                 "q1": {"0": "q2", "1": "q2"},
                 "q2": {"0": "q2", "1": "q2"}
@@ -41,7 +41,7 @@ describe('dfa-test', function () {
     it('should pass for at least one 0', function () {
         var language = {
             "states": ["q1", "q2"],
-            "alphabets": [0, 1],
+            "alphabets": ["0", "1"],
             "transitionFunc": {
                 "q1": {"0": "q2", "1": "q1"},
                 "q2": {"0": "q2", "1": "q2"}
@@ -60,7 +60,7 @@ describe('dfa-test', function () {
     it('should pass for even number of 0s', function () {
         var language = {
             "states": ["q1", "q2"],
-            "alphabets": [0, 1],
+            "alphabets": ["0", "1"],
             "transitionFunc": {
                 "q1": {0: "q2", 1: "q1"},
                 "q2": {0: "q1", 1: "q2"}
@@ -78,7 +78,7 @@ describe('dfa-test', function () {
     it('should pass for strings ending with 1', function () {
         var language = {
             "states": ["q1", "q2"],
-            "alphabets": [0, 1],
+            "alphabets": ["0", "1"],
             "transitionFunc": {
                 "q1": {0: "q2", 1: "q1"},
                 "q2": {0: "q2", 1: "q1"}
@@ -96,7 +96,7 @@ describe('dfa-test', function () {
     it('should pass for strings whose lengths divisible by 2 or 3', function () {
         var language = {
             "states": ["q1", "q2", "q3", "q4", "q5", "q6"],
-            "alphabets": [0, 1],
+            "alphabets": ["0", "1"],
             "transitionFunc": {
                 "q1": {0: "q2", 1: "q2"},
                 "q2": {0: "q3", 1: "q3"},
