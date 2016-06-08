@@ -15,7 +15,7 @@ var stateReducer = function (inputString, transitions, initialState) {
 
 var stateMapper = function (states, transitions, currentAlphabet) {
     return _.flatten(states.map(function (state) {
-        if (_.includes(Object.keys(transitions[state]), 'ε')) {
+        if (!_.isEmpty(Object.keys(transitions[state])) && _.includes(Object.keys(transitions[state]), 'ε')) {
             return stateMapper(transitions[state]['ε'], transitions, currentAlphabet)
         }
         return transitions[state][currentAlphabet] || []
