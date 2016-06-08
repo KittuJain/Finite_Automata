@@ -13,14 +13,10 @@ var stateReducer = function (inputString, transitions, initialState) {
     }, [initialState]);
 };
 
-var stateReducerOnEpsilon = function (transitions, state, currentAlphabet) {
-    return stateMapper(transitions[state]['ε'], transitions, currentAlphabet)
-};
-
 var stateMapper = function (states, transitions, currentAlphabet) {
     return _.flatten(states.map(function (state) {
         if (_.includes(Object.keys(transitions[state]), 'ε')) {
-            return stateReducerOnEpsilon(transitions, state, currentAlphabet);
+            return stateMapper(transitions[state]['ε'], transitions, currentAlphabet)
         }
         return transitions[state][currentAlphabet] || []
     }));
