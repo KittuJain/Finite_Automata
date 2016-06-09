@@ -4,16 +4,22 @@ var epsilon = 'ε';
 exports.nfa_generator = function (language) {
     return function (inputString) {
         var reducedStates = stateReducer(inputString, language.transitionFunc, language.initialState);
-        var outputStates = epsilonStatesMapper(reducedStates, language.transitionFunc);
+        var outputStates = epsilonStatesMapper(language.transitionFunc, reducedStates);
         return _.intersection(language.finalStates, reducedStates.concat(outputStates)).length > 0;
     }
 };
 
 var stateReducer = function (inputString, transitions, initialState) {
+    if (inputString.length == 0)
+        return getEpsilonStates(transitions, initialState).concat(initialState);
     return inputString.split('').reduce(function (states, currentAlphabet) {
         return stateMapper(states, transitions, currentAlphabet);
     }, [initialState]);
+};
 
+var getEpsilonStates = function (transitions, state) {
+    var transitionOnEpsilon = transitions[state][epsilon];
+    return (containsEpsilon(transitions, state) && transitionOnEpsilon || []);
 };
 
 var stateMapper = function (states, transitions, currentAlphabet) {
@@ -29,8 +35,10 @@ var containsEpsilon = function (transitions, state) {
     return (transitions[state] && transitions[state][epsilon]);
 };
 
-var epsilonStatesMapper = function (states, transitions) {
+var epsilonStatesMapper = function (transitions, states) {
     return _.flatten(states.map(function (state) {
-        return containsEpsilon(transitions, state) && transitions[state][epsilon] || [];
+        return getEpsilonStates(transitions, state).concat(state);
     }));
 };
+
+
