@@ -33,12 +33,12 @@ describe('nfa-test', function () {
         });
     });
 
-    describe('Language w | w is the string ending with an even number of 1s or even number of 0s', function () {
+    describe('Language w | w is the string containing with an even number of 1s or even number of 0s', function () {
         var language = {
             states: ["q1", "q2", "q3", "q4", "q5"],
-            alphabets: ["1", "0", "ε"],
+            alphabets: ["1", "0", "e"],
             transitionFunc: {
-                "q1": {"ε": ["q2", "q4"]},
+                "q1": {"e": ["q2", "q4"]},
                 "q2": {"0": ["q3"], "1": ["q2"]},
                 "q3": {"0": ["q2"], "1": ["q3"]},
                 "q4": {"0": ["q4"], "1": ["q5"]},
@@ -63,10 +63,10 @@ describe('nfa-test', function () {
     describe('Language w | w is the string ending with 0', function () {
         var language = {
             "states": ["q1", "q2", "q3", "q4"],
-            "alphabets": ["0", "1", "ε"],
+            "alphabets": ["0", "1", "e"],
             "transitionFunc": {
-                "q1": {"ε": ["q2"]},
-                "q2": {"ε": ["q3"]},
+                "q1": {"e": ["q2"]},
+                "q2": {"e": ["q3"]},
                 "q3": {"0": ["q3", "q4"], "1": ["q3"]},
                 "q4": {}
             },
@@ -89,9 +89,9 @@ describe('nfa-test', function () {
     describe('Language a^n | n is even or divisible by 3', function () {
         var language = {
             "states": ["q1", "q2", "q3", "q4", "q5", "q6"],
-            "alphabets": ["a", "ε"],
+            "alphabets": ["a", "e"],
             "transitionFunc": {
-                "q1": {"ε": ["q2", "q3"]},
+                "q1": {"e": ["q2", "q3"]},
                 "q2": {"a": ["q4"]},
                 "q3": {"a": ["q5"]},
                 "q4": {"a": ["q2"]},
@@ -185,7 +185,7 @@ describe('nfa-test', function () {
             states: ["q1", "q2", "q3", "q4", "q5", "q6"],
             alphabets: ['0', '1'],
             transitionFunc: {
-                'q1': {'ε': ['q2', 'q3']},
+                'q1': {'e': ['q2', 'q3']},
                 'q2': {0: ['q4'], 1: ['q4']},
                 'q3': {0: ['q5'], 1: ['q5']},
                 'q4': {0: ['q2'], 1: ['q2']},
@@ -194,6 +194,42 @@ describe('nfa-test', function () {
             },
             initialState: "q1",
             finalStates: ['q2', 'q3']
+        };
+        var nfa = nfa_generator(language);
+
+        it('should accept string with length 2', function () {
+            assert.ok(nfa('00'));
+        });
+        it('should accept string with length 3', function () {
+            assert.ok(nfa('010'));
+        });
+        it('should accept empty string', function () {
+            assert.ok(nfa(''));
+        });
+        it('should accept string with length divisible by both 2 & 3', function () {
+            assert.ok(nfa('101010'));
+        });
+        it('should not accept string with length neither divisible by 2 nor 3', function () {
+            assert.notOk(nfa('1'));
+            assert.notOk(nfa('10101'));
+        });
+    });
+
+    describe('Language w | w is string with length divisible by 2 or 3 with epsilon at last', function () {
+        var language = {
+            states: ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"],
+            alphabets: ['0', '1'],
+            transitionFunc: {
+                'q1': {0: ['q2', 'q3'], 1: ['q2', 'q3']},
+                'q2': {0: ['q4'], 1: ['q4']},
+                'q3': {0: ['q5'], 1: ['q5']},
+                'q4': {0: ['q2', 'q7'], 1: ['q2'], 'e': ['q8']},
+                'q5': {0: ['q6'], 1: ['q6']},
+                'q6': {0: ['q3'], 1: ['q3'], 'e': ['q9', 'q10']},
+                'q7': {}, 'q8': {}, 'q9': {}, 'q10': {}
+            },
+            initialState: "q1",
+            finalStates: ['q1', 'q8', 'q9', 'q10']
         };
         var nfa = nfa_generator(language);
 
