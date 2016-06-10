@@ -492,13 +492,61 @@ describe('nfa-test', function () {
         };
         var nfa = nfa_generator(language);
 
-        it("should pass for abba", function () {
+        it("should accept ", function () {
             assert.ok(nfa("a"));
             assert.ok(nfa("aaa"));
             assert.ok(nfa("ab"));
             assert.ok(nfa("ba"));
             assert.ok(nfa("abba"));
-        })
-
+        });
+        it("should pass for", function () {
+            assert.notOk(nfa("b"));
+            assert.notOk(nfa("bb"));
+            assert.notOk(nfa("bbb"));
+            assert.notOk(nfa("bbab"));
+            assert.notOk(nfa("abbb"));
+        });
     });
+
+    describe('Language w | w is string that satisfies [ab] U (a*b* U b*a*) | epsilon at end', function () {
+        var language = {
+            states: ["q1", "q2", "q3", "q4", "q5", "q6"],
+            alphabets: ['a', 'b'],
+            transitionFunc: {
+                "q1": {"a": ["q2", "q4"], "b": ["q2", "q4"]},
+                "q2": {"a": ["q2"], "e": ["q3"]},
+                "q3": {"b": ["q3"], "e": ["q6"]},
+                "q4": {"b": ["q4"], "e": ["q5"]},
+                "q5": {"a": ["q5"], "e": ["q6"]}
+            },
+            initialState: "q1",
+            finalStates: ['q6']
+        };
+        var nfa = nfa_generator(language);
+
+        it("should accept", function () {
+            assert.ok(nfa("a"));
+            assert.ok(nfa("b"));
+            assert.ok(nfa("ab"));
+            assert.ok(nfa("aa"));
+            assert.ok(nfa("ba"));
+            assert.ok(nfa("bb"));
+            assert.ok(nfa("abba"));
+            assert.ok(nfa("aba"));
+            assert.ok(nfa("baab"));
+            assert.ok(nfa("abaa"));
+            assert.ok(nfa("bab"));
+            assert.ok(nfa("babb"));
+            assert.ok(nfa("baabb"));
+            assert.ok(nfa("abbaa"));
+        });
+        it("should not accept ", function () {
+            assert.notOk(nfa(""));
+            assert.notOk(nfa("abab"));
+            assert.notOk(nfa("baba"));
+            assert.notOk(nfa("bbaaba"));
+            assert.notOk(nfa("aabbaa"));
+        });
+    });
+
 });

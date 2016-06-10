@@ -1,11 +1,11 @@
-var _ = require('lodash');
-var epsilon = 'e';
+const _ = require('lodash');
+const epsilon = 'e';
 
 exports.nfa_generator = function (language) {
     return function (inputString) {
         var outputStates = stateReducer(inputString, language.transitionFunc, language.initialState);
         return isFinalState(outputStates, language.finalStates);
-    }
+    };
 };
 
 var isFinalState = function (outputStates, finalStates) {
@@ -31,13 +31,9 @@ var getEpsilonStates = function (states, transitions) {
         return containsEpsilon(transitions, state) && transitions[state][epsilon] || [];
     }).flatten();
 
-    if (epsilonStates.isSubsetOf(states)) {
-        return states;
-    }
-    else {
-        var unionStates = epsilonStates.union(states);
-        return getEpsilonStates(unionStates, transitions);
-    }
+    if (epsilonStates.isSubsetOf(states)) return states;
+    var unionStates = epsilonStates.union(states);
+    return getEpsilonStates(unionStates, transitions);
 };
 
 var containsEpsilon = function (transitions, state) {
