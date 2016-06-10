@@ -38,7 +38,7 @@ describe('nfa-test', function () {
             states: ["q1", "q2", "q3", "q4", "q5"],
             alphabets: ["1", "0"],
             transitionFunc: {
-                "q1": {"ε": ["q2", "q4"]},
+                "q1": {"e": ["q2", "q4"]},
                 "q2": {"0": ["q3"], "1": ["q2"]},
                 "q3": {"0": ["q2"], "1": ["q3"]},
                 "q4": {"0": ["q4"], "1": ["q5"]},
@@ -65,8 +65,8 @@ describe('nfa-test', function () {
             "states": ["q1", "q2", "q3", "q4"],
             "alphabets": ["0", "1"],
             "transitionFunc": {
-                "q1": {"ε": ["q2"]},
-                "q2": {"ε": ["q3"]},
+                "q1": {"e": ["q2"]},
+                "q2": {"e": ["q3"]},
                 "q3": {"0": ["q3", "q4"], "1": ["q3"]},
                 "q4": {}
             },
@@ -91,7 +91,7 @@ describe('nfa-test', function () {
             "states": ["q1", "q2", "q3", "q4", "q5", "q6"],
             "alphabets": ["a"],
             "transitionFunc": {
-                "q1": {"ε": ["q2", "q3"]},
+                "q1": {"e": ["q2", "q3"]},
                 "q2": {"a": ["q4"]},
                 "q3": {"a": ["q5"]},
                 "q4": {"a": ["q2"]},
@@ -185,7 +185,7 @@ describe('nfa-test', function () {
             states: ["q1", "q2", "q3", "q4", "q5", "q6"],
             alphabets: ['0', '1'],
             transitionFunc: {
-                'q1': {'ε': ['q2', 'q3']},
+                'q1': {'e': ['q2', 'q3']},
                 'q2': {0: ['q4'], 1: ['q4']},
                 'q3': {0: ['q5'], 1: ['q5']},
                 'q4': {0: ['q2'], 1: ['q2']},
@@ -223,9 +223,9 @@ describe('nfa-test', function () {
                 'q1': {0: ['q2', 'q3'], 1: ['q2', 'q3']},
                 'q2': {0: ['q4'], 1: ['q4']},
                 'q3': {0: ['q5'], 1: ['q5']},
-                'q4': {0: ['q2', 'q7'], 1: ['q2'], 'ε': ['q8']},
+                'q4': {0: ['q2', 'q7'], 1: ['q2'], 'e': ['q8']},
                 'q5': {0: ['q6'], 1: ['q6']},
-                'q6': {0: ['q3'], 1: ['q3'], 'ε': ['q9', 'q10']},
+                'q6': {0: ['q3'], 1: ['q3'], 'e': ['q9', 'q10']},
                 'q7': {}, 'q8': {}, 'q9': {}, 'q10': {}
             },
             initialState: "q1",
@@ -256,10 +256,10 @@ describe('nfa-test', function () {
             states: ["q1", "q2", "q3", "q4", "q5"],
             alphabets: ['1', '0'],
             transitionFunc: {
-                'q1': {'ε': ['q2'], '0': ['q1']},
-                'q2': {'ε': ['q3'], '0': ['q2']},
+                'q1': {'e': ['q2'], '0': ['q1']},
+                'q2': {'e': ['q3'], '0': ['q2']},
                 'q3': {'1': ['q4'], '0': ['q3']},
-                'q4': {'ε': ['q5'], '0': ['q4']},
+                'q4': {'e': ['q5'], '0': ['q4']},
                 'q5': {}
             },
             initialState: "q1",
@@ -283,21 +283,21 @@ describe('nfa-test', function () {
             states: ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10", "q11", "q12", "q13", "q14", "q15"],
             alphabets: ['a', 'b'],
             transitionFunc: {
-                'q1': {'ε': ['q2', 'q9']},
-                'q2': {'ε': ['q3']},
+                'q1': {'e': ['q2', 'q9']},
+                'q2': {'e': ['q3']},
                 'q3': {'a': ['q4']},
-                'q4': {'ε': ['q5']},
+                'q4': {'e': ['q5']},
                 'q5': {'a': ['q6']},
-                'q6': {'ε': ['q7']},
+                'q6': {'e': ['q7']},
                 'q7': {'a': ['q8']},
-                'q8': {'ε': ['q3']},
+                'q8': {'e': ['q3']},
                 'q9': {'b': ['q10']},
-                'q10': {'ε': ['q11']},
-                'q11': {'ε': ['q12']},
+                'q10': {'e': ['q11']},
+                'q11': {'e': ['q12']},
                 'q12': {'a': ['q13']},
-                'q13': {'ε': ['q14']},
+                'q13': {'e': ['q14']},
                 'q14': {'b': ['q15']},
-                'q15': {'ε': ['q12']}
+                'q15': {'e': ['q12']}
             },
             initialState: "q1",
             finalStates: ['q2', 'q8', 'q11', 'q15']
@@ -336,16 +336,16 @@ describe('nfa-test', function () {
             states: ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9", "q10"],
             alphabets: ['a', 'b'],
             transitionFunc: {
-                'q1': {'ε': ['q2']},
-                'q2': {'ε': ['q3', 'q7']},
+                'q1': {'e': ['q2']},
+                'q2': {'e': ['q3', 'q7']},
                 'q3': {'a': ['q4']},
-                'q4': {'ε': ['q5']},
+                'q4': {'e': ['q5']},
                 'q5': {'b': ['q6']},
-                'q6': {'ε': ['q2']},
+                'q6': {'e': ['q2']},
                 'q7': {'b': ['q8']},
-                'q8': {'ε': ['q9']},
+                'q8': {'e': ['q9']},
                 'q9': {'a': ['q10']},
-                'q10': {'ε': ['q2']}
+                'q10': {'e': ['q2']}
             },
             initialState: "q1",
             finalStates: ['q1', 'q6', 'q10']
@@ -372,15 +372,15 @@ describe('nfa-test', function () {
         });
     });
 
-    describe('language w | w is the string that satisfies (0*1* ∪ 1*0*) | 2 level ε', function () {
+    describe('language w | w is the string that satisfies (0*1* ∪ 1*0*) | 2 level e', function () {
         var language = {
             states: ["q1", "q3", "q2", "q5", "q4", "q6", "q7"],
             alphabets: ["1", "0"],
             transitionFunc: {
-                "q1": {"ε": ["q2", "q4"]},
-                "q2": {"0": ["q2"], "ε": ["q3"]},
+                "q1": {"e": ["q2", "q4"]},
+                "q2": {"0": ["q2"], "e": ["q3"]},
                 "q3": {"1": ["q3"]},
-                "q4": {"1": ["q4"], "ε": ["q5"]},
+                "q4": {"1": ["q4"], "e": ["q5"]},
                 "q5": {"0": ["q5"]}
             },
             initialState: "q1",
@@ -422,16 +422,16 @@ describe('nfa-test', function () {
         });
     });
 
-    describe('language w | w is the string that satisfies (0*1* ∪ 1*0*) | 3 level of ε', function () {
+    describe('language w | w is the string that satisfies (0*1* ∪ 1*0*) | 3 level of e', function () {
         var language = {
             states: ["q1", "q3", "q2", "q5", "q4", "q6", "q7"],
             alphabets: ["1", "0"],
             transitionFunc: {
-                "q1": {"ε": ["q2", "q4"]},
-                "q2": {"0": ["q2"], "ε": ["q3"]},
-                "q3": {"1": ["q3"], "ε": ["q6"]},
-                "q4": {"1": ["q4"], "ε": ["q5"]},
-                "q5": {"0": ["q5"], "ε": ["q7"]}
+                "q1": {"e": ["q2", "q4"]},
+                "q2": {"0": ["q2"], "e": ["q3"]},
+                "q3": {"1": ["q3"], "e": ["q6"]},
+                "q4": {"1": ["q4"], "e": ["q5"]},
+                "q5": {"0": ["q5"], "e": ["q7"]}
             },
             initialState: "q1",
             finalStates: ["q6", "q7"]
@@ -470,5 +470,35 @@ describe('nfa-test', function () {
             assert.notOk(nfa("00110"));
             assert.notOk(nfa("11001"));
         });
+    });
+
+    describe('Language w | w is string that satisfies (ab)*(ba)* U aa*', function () {
+        var language = {
+            states: ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"],
+            alphabets: ['a', 'b'],
+            transitionFunc: {
+                'q1': {'e': ['q2', 'q4']},
+                'q2': {'a': ['q3']},
+                'q3': {'a': ['q3']},
+                'q4': {'a': ['q5'], 'e': ['q6']},
+                'q5': {'b': ['q6']},
+                'q6': {'e': ['q4', 'q7']},
+                'q7': {'b': ['q8'], 'e': ['q9']},
+                'q8': {'a': ['q9']},
+                'q9': {'e': ['q7']}
+            },
+            initialState: "q1",
+            finalStates: ['q3', 'q6', 'q9']
+        };
+        var nfa = nfa_generator(language);
+
+        it("should pass for abba", function () {
+            assert.ok(nfa("a"));
+            assert.ok(nfa("aaa"));
+            assert.ok(nfa("ab"));
+            assert.ok(nfa("ba"));
+            assert.ok(nfa("abba"));
+        })
+
     });
 });

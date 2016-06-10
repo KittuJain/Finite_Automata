@@ -1,58 +1,61 @@
 var _ = require('lodash');
-var epsilon = 'ε';
+var epsilon = 'e';
 
 exports.nfa_generator = function (language) {
     return function (inputString) {
-        var initialStatesOnEpsilons = getInitialEpsilonStates([language.initialState], language.transitionFunc);
-        var reducedStates = stateReducer(inputString, language.transitionFunc, initialStatesOnEpsilons);
-        var epsilonStatesAtEnd = epsilonStatesMapper(language.transitionFunc, reducedStates);
-        return isFinalState(reducedStates.concat(epsilonStatesAtEnd), language.finalStates);
+        var outputStates = stateReducer(inputString, language.transitionFunc, language.initialState);
+        return isFinalState(outputStates, language.finalStates);
     }
 };
 
-var getInitialEpsilonStates = function (initialStates, transitions) {
-  return (initialStates.map(function (state) {
-      if(containsEpsilon(transitions, state))
-        return [state].concat(getInitialEpsilonStates(transitions[state][epsilon], transitions));
-      return [state];
-  })).flatten();
-};
-
 var isFinalState = function (outputStates, finalStates) {
-    return isNotEmpty(finalStates.intersection(outputStates));
-};
-
-var isNotEmpty = function (item) {
-    return !_.isEmpty(item)
+    return finalStates.intersection(outputStates).isNotEmpty();
 };
 
 var stateReducer = function (inputString, transitions, initialState) {
+    var epsilonStates = getEpsilonStates([initialState], transitions);
     return inputString.split('').reduce(function (states, currentAlphabet) {
         return stateMapper(states, transitions, currentAlphabet);
-    }, initialState);
+    }, epsilonStates);
 };
 
 var stateMapper = function (states, transitions, currentAlphabet) {
-    return states.map(function (state) {
-        var stateOnCurrentAlphabet = transitions[state] && transitions[state][currentAlphabet] || [];
-        if (containsEpsilon(transitions, state))
-            return stateOnCurrentAlphabet.concat(stateMapper(transitions[state][epsilon], transitions, currentAlphabet));
-        return stateOnCurrentAlphabet;
+    var statesOnCurrentAlphabet = states.map(function (state) {
+        return transitions[state] && transitions[state][currentAlphabet] || [];
     }).flatten();
+    return getEpsilonStates(statesOnCurrentAlphabet, transitions)
+};
+
+var getEpsilonStates = function (states, transitions) {
+    var epsilonStates = states.map(function (state) {
+        return containsEpsilon(transitions, state) && transitions[state][epsilon] || [];
+    }).flatten();
+
+    if (epsilonStates.isSubsetOf(states)) {
+        return states;
+    }
+    else {
+        var unionStates = epsilonStates.union(states);
+        return getEpsilonStates(unionStates, transitions);
+    }
 };
 
 var containsEpsilon = function (transitions, state) {
     return (transitions[state] && transitions[state][epsilon]);
 };
 
-var epsilonStatesMapper = function (transitions, states) {
-    return states.map(function (state) {
-        return getEpsilonStates(transitions, state);
-    }).flatten();
+var isSubsetOf = function (subSet, superSet) {
+    return subSet.every(function (element) {
+        return _.includes(superSet, element);
+    })
 };
 
-var getEpsilonStates = function (transitions, state) {
-    return (containsEpsilon(transitions, state) ? transitions[state][epsilon] : [])
+Array.prototype.isSubsetOf = function (array) {
+    return isSubsetOf(this, array);
+};
+
+Array.prototype.union = function (array) {
+    return _.union(this, array);
 };
 
 Array.prototype.intersection = function (array) {
@@ -61,4 +64,8 @@ Array.prototype.intersection = function (array) {
 
 Array.prototype.flatten = function () {
     return _.flatten(this);
+};
+
+Array.prototype.isNotEmpty = function () {
+    return !_.isEmpty(this);
 };
