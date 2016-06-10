@@ -371,4 +371,104 @@ describe('nfa-test', function () {
             assert.notOk(nfa('aaaaaaaaa'));
         });
     });
+
+    describe('language w | w is the string that satisfies (0*1* ∪ 1*0*) | 2 level ε', function () {
+        var language = {
+            states: ["q1", "q3", "q2", "q5", "q4", "q6", "q7"],
+            alphabets: ["1", "0"],
+            transitionFunc: {
+                "q1": {"ε": ["q2", "q4"]},
+                "q2": {"0": ["q2"], "ε": ["q3"]},
+                "q3": {"1": ["q3"]},
+                "q4": {"1": ["q4"], "ε": ["q5"]},
+                "q5": {"0": ["q5"]}
+            },
+            initialState: "q1",
+            finalStates: ["q3", "q5"]
+        };
+        var nfa = nfa_generator(language);
+
+        it('should accept empty string', function () {
+            assert.ok(nfa(''));
+        });
+        it('should accept 1 or 0', function () {
+            assert.ok(nfa('1'));
+            assert.ok(nfa('0'));
+        });
+        it('should accept 00 0r 11', function () {
+            assert.ok(nfa('00'));
+            assert.ok(nfa('11'));
+        });
+        it('should accept any number of 1s after any number of 0s', function () {
+            assert.ok(nfa('110'));
+            assert.ok(nfa("1100"));
+            assert.ok(nfa('100'));
+        });
+        it('should accept any number of 1s after any number of 0s', function () {
+            assert.ok(nfa('001'));
+            assert.ok(nfa("0011"));
+        });
+        it('should not accept string starting and ending with same alhabet', function () {
+            assert.notOk(nfa('101'));
+            assert.notOk(nfa('010'));
+            assert.notOk(nfa("00110"));
+            assert.notOk(nfa("11001"));
+        });
+        it('should not accept string where neither all 1s are followed by 0s nor all 0s followed by 1s ', function () {
+            assert.notOk(nfa('101'));
+            assert.notOk(nfa('010'));
+            assert.notOk(nfa("00110"));
+            assert.notOk(nfa("11001"));
+        });
+    });
+
+    describe('language w | w is the string that satisfies (0*1* ∪ 1*0*) | 3 level of ε', function () {
+        var language = {
+            states: ["q1", "q3", "q2", "q5", "q4", "q6", "q7"],
+            alphabets: ["1", "0"],
+            transitionFunc: {
+                "q1": {"ε": ["q2", "q4"]},
+                "q2": {"0": ["q2"], "ε": ["q3"]},
+                "q3": {"1": ["q3"], "ε": ["q6"]},
+                "q4": {"1": ["q4"], "ε": ["q5"]},
+                "q5": {"0": ["q5"], "ε": ["q7"]}
+            },
+            initialState: "q1",
+            finalStates: ["q6", "q7"]
+        };
+        var nfa = nfa_generator(language);
+
+        it('should accept empty string', function () {
+            assert.ok(nfa(''));
+        });
+        it('should accept 1 or 0', function () {
+            assert.ok(nfa('1'));
+            assert.ok(nfa('0'));
+        });
+        it('should accept 00 0r 11', function () {
+            assert.ok(nfa('00'));
+            assert.ok(nfa('11'));
+        });
+        it('should accept any number of 1s after any number of 0s', function () {
+            assert.ok(nfa('110'));
+            assert.ok(nfa("1100"));
+            assert.ok(nfa('100'));
+        });
+        it('should accept any number of 1s after any number of 0s', function () {
+            assert.ok(nfa('001'));
+            assert.ok(nfa("0011"));
+        });
+        it('should not accept string starting and ending with same alhabet', function () {
+            assert.notOk(nfa('101'));
+            assert.notOk(nfa('010'));
+            assert.notOk(nfa("00110"));
+            assert.notOk(nfa("11001"));
+        });
+        it('should not accept string where neither all 1s are followed by 0s nor all 0s followed by 1s ', function () {
+            assert.notOk(nfa('101'));
+            assert.notOk(nfa('010'));
+            assert.notOk(nfa("00110"));
+            assert.notOk(nfa("11001"));
+        });
+    });
 });
