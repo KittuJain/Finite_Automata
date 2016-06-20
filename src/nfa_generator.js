@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const epsilon = 'e';
 
-exports.nfa_generator = function (language) {
+var nfa_generator = function (language) {
     return function (inputString) {
         var outputStates = stateReducer(inputString, language.transitionFunc, language.initialState);
         return isFinalState(outputStates, language.finalStates);
@@ -64,4 +64,10 @@ Array.prototype.flatten = function () {
 
 Array.prototype.isNotEmpty = function () {
     return !_.isEmpty(this);
+};
+
+
+module.exports = {
+    nfa_generator: nfa_generator,
+    getEpsilonStates: getEpsilonStates
 };
